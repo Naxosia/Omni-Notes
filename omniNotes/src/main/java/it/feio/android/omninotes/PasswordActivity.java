@@ -203,43 +203,34 @@ public class PasswordActivity extends BaseActivity {
    * Checks correctness of form data
    */
   private boolean checkData() {
-    boolean res = true;
-
-    if (password.getText().length() == passwordCheck.getText().length()
-        && passwordCheck.getText().length() == 0) {
+    if (passwordMatches() && questionIsValid() && answerMatches()) {
       return true;
+    } else {
+      setErrorMessages();
+      return false;
     }
-
-    boolean passwordOk = password.getText().toString().length() > 0;
-    boolean passwordCheckOk =
-        passwordCheck.getText().toString().length() > 0 && password.getText().toString()
-            .equals(
-                passwordCheck.getText().toString());
-    boolean questionOk = question.getText().toString().length() > 0;
-    boolean answerOk = answer.getText().toString().length() > 0;
-    boolean answerCheckOk =
-        answerCheck.getText().toString().length() > 0 && answer.getText().toString().equals
-            (answerCheck.getText().toString());
-
-    if (!passwordOk || !passwordCheckOk || !questionOk || !answerOk || !answerCheckOk) {
-      res = false;
-      if (!passwordOk) {
-        password.setError(getString(R.string.settings_password_not_matching));
-      }
-      if (!passwordCheckOk) {
-        passwordCheck.setError(getString(R.string.settings_password_not_matching));
-      }
-      if (!questionOk) {
-        question.setError(getString(R.string.settings_password_question));
-      }
-      if (!answerOk) {
-        answer.setError(getString(R.string.settings_answer_not_matching));
-      }
-      if (!answerCheckOk) {
-        answerCheck.setError(getString(R.string.settings_answer_not_matching));
-      }
+  }
+  private boolean passwordMatches() {
+    return password.getText().toString().equals(passwordCheck.getText().toString());
+  }
+  private boolean questionIsValid() {
+    return question.getText().toString().length() > 0;
+  }
+  private boolean answerMatches() {
+    return answer.getText().toString().equals(answerCheck.getText().toString());
+  }
+  private void setErrorMessages() {
+    if (!passwordMatches()) {
+      password.setError(getString(R.string.settings_password_not_matching));
+      passwordCheck.setError(getString(R.string.settings_password_not_matching));
     }
-    return res;
+    if (!questionIsValid()) {
+      question.setError(getString(R.string.settings_password_question));
+    }
+    if (!answerMatches()) {
+      answer.setError(getString(R.string.settings_answer_not_matching));
+      answerCheck.setError(getString(R.string.settings_answer_not_matching));
+    }
   }
 
 

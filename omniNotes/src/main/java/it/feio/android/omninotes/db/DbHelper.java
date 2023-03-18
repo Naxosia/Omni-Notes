@@ -58,6 +58,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -1050,32 +1051,24 @@ public class DbHelper extends SQLiteOpenHelper {
 
     // Everything about attachments
     int attachmentsAll = 0;
-    int images = 0;
-    int videos = 0;
-    int audioRecordings = 0;
-    int sketches = 0;
-    int files = 0;
+    Map<String, Integer> attachmentData = new HashMap<>();
+    attachmentData.put(MIME_TYPE_IMAGE, 0);
+    attachmentData.put(MIME_TYPE_VIDEO, 0);
+    attachmentData.put(MIME_TYPE_AUDIO, 0);
+    attachmentData.put(MIME_TYPE_SKETCH, 0);
+    attachmentData.put(MIME_TYPE_FILES, 0);
 
     List<Attachment> attachments = getAllAttachments();
     for (Attachment attachment : attachments) {
-      if (MIME_TYPE_IMAGE.equals(attachment.getMime_type())) {
-        images++;
-      } else if (MIME_TYPE_VIDEO.equals(attachment.getMime_type())) {
-        videos++;
-      } else if (MIME_TYPE_AUDIO.equals(attachment.getMime_type())) {
-        audioRecordings++;
-      } else if (MIME_TYPE_SKETCH.equals(attachment.getMime_type())) {
-        sketches++;
-      } else if (MIME_TYPE_FILES.equals(attachment.getMime_type())) {
-        files++;
-      }
+      attachmentData.put(attachment.getMime_type(), attachmentData.get(attachment.getMime_type())+1);
     }
+
     mStats.setAttachments(attachmentsAll);
-    mStats.setImages(images);
-    mStats.setVideos(videos);
-    mStats.setAudioRecordings(audioRecordings);
-    mStats.setSketches(sketches);
-    mStats.setFiles(files);
+    mStats.setImages(attachmentData.get(MIME_TYPE_IMAGE));
+    mStats.setVideos(attachmentData.get(MIME_TYPE_VIDEO));
+    mStats.setAudioRecordings(attachmentData.get(MIME_TYPE_AUDIO));
+    mStats.setSketches(attachmentData.get(MIME_TYPE_SKETCH));
+    mStats.setFiles(attachmentData.get(MIME_TYPE_FILES));
 
     return mStats;
   }

@@ -21,6 +21,7 @@ import android.os.Parcelable;
 import it.feio.android.omninotes.commons.models.BaseAttachment;
 import it.feio.android.omninotes.commons.models.BaseCategory;
 import it.feio.android.omninotes.commons.models.BaseNote;
+import it.feio.android.omninotes.utils.NoteUtils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,15 +52,11 @@ public class Note extends BaseNote implements Parcelable {
   }
 
 
-  public Note(Long creation, Long lastModification, String title, String content, Integer archived,
-      Integer trashed, String alarm, String recurrenceRule, Integer reminderFired, String latitude,
-      String longitude,
-      Category
-          category, Integer locked, Integer checklist) {
-    super(creation, lastModification, title, content, archived, trashed, alarm, reminderFired,
-        recurrenceRule,
-        latitude,
-        longitude, category, locked, checklist);
+  public Note(Long creation, Long lastModification, NoteUtils noteUtils, Category category) {
+    super(creation, lastModification, noteUtils.title, noteUtils.content, noteUtils.archived, noteUtils.trashed, noteUtils.alarm, noteUtils.reminderFired,
+            noteUtils.recurrenceRule,
+            noteUtils.latitude,
+            noteUtils.longitude, category, noteUtils.locked, noteUtils.checklist);
   }
 
 
